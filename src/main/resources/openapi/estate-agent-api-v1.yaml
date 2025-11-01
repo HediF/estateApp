@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  title: Estate Management API
+  version: 1.0.0
+  description: |
+    Minimal role-based API for the Estate application.
+    Agents can add customers and properties, and view them.
+    Customers can view only their assigned properties.
+
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /agent/customers:
+    post:
+      summary: Add a new customer (agent only)
+      operationId: addCustomer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerRequest'
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+        '400':
+          description: Invalid input
+        '409':
+          description: Email already exists
+
+    get:
+      summary: Fetch all customers for the authenticated agent
+      operationId: getAllCustomers
+      responses:
+        '200':
+          description: List of customers belonging to the authenticated agent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+        '401':
+          description: Unauthorized
+
+  /agent/properties:
+    post:
+      summary: Add a new property (agent only)
+      operationId: addProperty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePropertyRequest'
+      responses:
+        '201':
+          description: Property created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '400':
+          description: Invalid input
+
+    get:
+      summary: Fetch all properties for the authenticated agent
+      operationId: getAllProperties
+      responses:
+        '200':
+          description: List of properties owned by the authenticated agent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyResponse'
+        '401':
+          description: Unauthorized
+
+  /agent/properties/{propertyId}/assign:
+    put:
+      summary: Assign or reassign a property to a customer (agent only)
+      operationId: assignPropertyToCustomer
+      parameters:
+        - name: propertyId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the property to assign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [customerId]
+              properties:
+                customerId:
+                  type: integer
+                  example: 5
+      responses:
+        '200':
+          description: Property successfully assigned to the customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyResponse'
+        '400':
+          description: Invalid input
+        '404':
+          description: Property or Customer not found
+        '401':
+          description: Unauthorized
+
+components:
+  schemas:
+    CreateCustomerRequest:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          format: email
+          example: john.doe@example.com
+        password:
+          type: string
+          format: password
+          minLength: 6
+          example: mysecurepassword
+
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          format: email
+          example: john.doe@example.com
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplifiedProperty'
+
+    CreatePropertyRequest:
+      type: object
+      required: [title, address, price]
+      properties:
+        title:
+          type: string
+          example: Modern Apartment
+        address:
+          type: string
+          example: 123 Main St, Berlin
+        price:
+          type: number
+          format: double
+          example: 120000.0
+        isNewConstruction:
+          type: boolean
+          example: true
+        customerId:
+          type: integer
+          description: ID of the customer assigned to the property
+          example: 5
+
+    PropertyResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        title:
+          type: string
+          example: Modern Apartment
+        address:
+          type: string
+          example: 123 Main St, Berlin
+        price:
+          type: number
+          format: double
+          example: 120000.0
+        isNewConstruction:
+          type: boolean
+          example: true
+        customerId:
+          type: integer
+          example: 5
+        agentId:
+          type: integer
+          example: 1
+
+    SimplifiedProperty:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
