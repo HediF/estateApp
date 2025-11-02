@@ -77,7 +77,7 @@ Built with **ReactJS**, it communicates with the Spring Boot backend through RES
 
 ### 1. Clone the repository
 
-    git clone https://github.com/hedifeki/estate-frontend.git
+    git clone https://github.com/HediF/estateApp
     cd estate-frontend
 
 ### 2. Install dependencies
@@ -89,12 +89,6 @@ Built with **ReactJS**, it communicates with the Spring Boot backend through RES
     npm start
     # Frontend will run by default on http://localhost:3000
 
-### 4. Environment variables
-
-Create a `.env` file in the project root:
-
-    REACT_APP_API_BASE_URL=http://localhost:8080/api
-
 ---
 
 ## 🧪 Testing
@@ -105,9 +99,7 @@ Run all Jest + React Testing Library tests:
 
 ### Example test coverage
 
-- AgentDashboard.test.jsx → verifies adding customers, properties, and linking
-- AddCustomerModal.test.jsx → verifies input validation and submit state
-- AddPropertyModal.test.jsx → verifies disabled/enabled behavior and form handling
+- AgentDashboard.test.jsx → verifies displaying agent dashboard and adding customers / properties
 
 ---
 
@@ -133,9 +125,11 @@ Run all Jest + React Testing Library tests:
 
 ### UX / Validation
 
+- Improve UI
+- Refactor code / extract more reusable logic
 - Add frontend input validation for email and password strength
 - Show clear error messages for invalid API responses
-- Handle offline mode / API timeouts gracefully
+- Handle offline mode / API timeouts
 
 ### Internationalization
 
@@ -143,31 +137,14 @@ Run all Jest + React Testing Library tests:
 
 ### State Management
 
-- Introduce Redux Toolkit when global state grows (e.g. caching users/properties across views)
+- Introduce Redux when global state grows (e.g. caching users/properties across views)
+- Introduce infinite scrolling when the users / properties grow
 
 ### Testing
 
 - Add integration tests for linking flows
 - Simulate API errors in unit tests
-- Add end-to-end coverage (Cypress)
-
----
-
-## 🧠 Folder Structure (Simplified)
-
-    src/
-     ├── api/
-     │    └── AgentApi.js
-     ├── components/
-     │    ├── AgentDashboard/
-     │    ├── modals/
-     │    ├── shared/
-     │    └── ...
-     ├── context/
-     │    └── AuthContext.jsx
-     ├── tests/
-     ├── App.jsx
-     └── index.jsx
+- Add end-to-end coverage (Cypress or Playwright)
 
 ---
 
@@ -184,6 +161,4 @@ Run all Jest + React Testing Library tests:
 
 ## 👨‍💻 Author
 
-**Hedi Feki**  
-Founder & Full-Stack Developer  
-📧 support@quickshift.team
+**Hedi Feki**
