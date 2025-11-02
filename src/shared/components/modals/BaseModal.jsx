@@ -7,22 +7,35 @@ const BaseModal = ({
   children,
   onSubmit,
   submitLabel,
+  submitDisabled,
+  testID,
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={styles.overlay}>
+    <div
+      style={styles.overlay}
+      data-testid={testID ? `${testID}-overlay` : undefined}
+    >
       <div style={styles.modal}>
         <div style={styles.header}>
           <h3 style={styles.title}>{title}</h3>
-          <Button label='✕' onClick={onClose} variant='secondary' />
+          <Button
+            label='✕'
+            onClick={onClose}
+            variant='secondary'
+            testID={testID ? `${testID}-close` : undefined}
+          />
         </div>
-
         <div style={styles.content}>{children}</div>
-
         {onSubmit && (
           <div style={styles.footer}>
-            <Button label={submitLabel || 'Submit'} onClick={onSubmit} />
+            <Button
+              label={submitLabel || 'Submit'}
+              onClick={onSubmit}
+              submitDisabled={submitDisabled}
+              testID={testID ? `${testID}-submit` : undefined}
+            />
           </div>
         )}
       </div>
@@ -45,33 +58,38 @@ const styles = {
   },
   modal: {
     backgroundColor: '#fff',
-    borderRadius: 8,
-    width: '400px',
+    borderRadius: 10,
+    width: '420px',
     maxWidth: '90%',
-    padding: '20px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    position: 'relative',
+    padding: '20px 24px',
+    boxShadow: '0 6px 16px rgba(0,0,0,0.15)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
   },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottom: '1px solid #eee',
-    paddingBottom: 8,
-    marginBottom: 16,
+    borderBottom: '1px solid #e5e7eb',
+    paddingBottom: 10,
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: 600,
     margin: 0,
   },
   content: {
-    fontFamily: 'Arial, sans-serif',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '14px',
+    paddingTop: 4,
   },
   footer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    marginTop: 20,
+    borderTop: '1px solid #f1f1f1',
+    paddingTop: 12,
   },
 };
 

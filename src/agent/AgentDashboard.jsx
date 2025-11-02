@@ -29,39 +29,24 @@ const AgentDashboard = () => {
   );
 
   const handleSubmitCustomer = useCallback(async (data) => {
-    try {
-      const newCustomer = await addCustomer(data);
-      setCustomers((prev) => [...prev, newCustomer]);
-      setCustomerModalOpen(false);
-    } catch (error) {
-      console.error('[DASHBOARD] Failed to add customer:', error);
-      alert('Failed to add customer');
-    }
+    const newCustomer = await addCustomer(data);
+    setCustomers((prev) => [...prev, newCustomer]);
+    setCustomerModalOpen(false);
   }, []);
 
   const handleSubmitProperty = useCallback(async (data) => {
-    try {
-      const newProperty = await addProperty(data);
-      setProperties((prev) => [...prev, newProperty]);
-      setPropertyModalOpen(false);
-    } catch (error) {
-      console.error('[DASHBOARD] Failed to add property:', error);
-      alert('Failed to add property');
-    }
+    const newProperty = await addProperty(data);
+    setProperties((prev) => [...prev, newProperty]);
+    setPropertyModalOpen(false);
   }, []);
 
   const fetchCustomersAndProperties = useCallback(async () => {
-    try {
-      const [fetchedCustomers, fetchedProperties] = await Promise.all([
-        getAllCustomers(),
-        getAllProperties(),
-      ]);
-      setCustomers(fetchedCustomers);
-      setProperties(fetchedProperties);
-    } catch (error) {
-      console.error('[DASHBOARD] Failed to fetch data:', error);
-      alert('Failed to load dashboard data.');
-    }
+    const [fetchedCustomers, fetchedProperties] = await Promise.all([
+      getAllCustomers(),
+      getAllProperties(),
+    ]);
+    setCustomers(fetchedCustomers);
+    setProperties(fetchedProperties);
   }, []);
 
   const handlePropertyAssigned = useCallback(
@@ -110,7 +95,12 @@ const AgentDashboard = () => {
       <main style={styles.container}>
         <div style={styles.grid}>
           <div style={styles.left}>
-            <h2 style={styles.sectionTitle}>Properties</h2>
+            <h2
+              data-testid='properties-section-title'
+              style={styles.sectionTitle}
+            >
+              Properties
+            </h2>
             <PropertiesGrid
               properties={properties}
               onAssigned={handlePropertyAssigned}
@@ -128,12 +118,14 @@ const AgentDashboard = () => {
         isOpen={isCustomerModalOpen}
         onClose={handleCloseCustomerModal}
         onSubmit={handleSubmitCustomer}
+        testID='add-customer-modal'
       />
 
       <AddPropertyModal
         isOpen={isPropertyModalOpen}
         onClose={handleClosePropertyModal}
         onSubmit={handleSubmitProperty}
+        testID='add-property-modal'
       />
     </div>
   );

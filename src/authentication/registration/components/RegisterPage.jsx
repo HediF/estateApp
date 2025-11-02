@@ -17,31 +17,33 @@ const RegisterPage = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError(null);
   }, []);
 
   const handleRegister = useCallback(
     async (e) => {
       e.preventDefault();
       setLoading(true);
-      setError(null);
       try {
         const data = await registerAgent(formData);
+        if (!data) return;
         login(data);
-      } catch (err) {
-        console.error('[REGISTER ERROR]', err);
-        setError(err.message);
       } finally {
         setLoading(false);
       }
     },
     [formData, login]
   );
+
+  const isSubmitDisabled =
+    loading ||
+    !formData.name.trim() ||
+    !formData.email.trim() ||
+    !formData.password.trim() ||
+    !formData.registrationCode.trim();
 
   return (
     <div style={styles.container}>
@@ -76,10 +78,10 @@ const RegisterPage = () => {
         <Button
           type='submit'
           label={loading ? 'Registering...' : 'Register'}
-          disabled={loading || !formData.email || !formData.password}
+          submitDisabled={isSubmitDisabled}
         />
       </form>
-      {error && <p style={styles.error}>{error}</p>}
+
       <p>
         Already have an account?{' '}
         <span style={styles.link} onClick={() => navigate('/auth/login')}>
@@ -104,7 +106,6 @@ const styles = {
     marginTop: '20px',
   },
   link: { color: '#007BFF', cursor: 'pointer', textDecoration: 'underline' },
-  error: { color: 'red', marginTop: '10px' },
 };
 
 export default RegisterPage;

@@ -1,70 +1,189 @@
-# Getting Started with Create React App
+# 🏠 Estate Management Platform – Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the **frontend** for the Estate Management Platform, a full-stack application where **agents** can manage properties and customers, and **customers** can view their assigned properties.
 
-## Available Scripts
+Built with **ReactJS**, it communicates with the Spring Boot backend through REST APIs and provides an intuitive, modern UI for both agent and customer roles.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 👨‍💼 Agent
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Add new customers via a modal form
+- Add new properties (title, address, price, new construction flag)
+- Link a property to a customer through a dedicated modal
+- View all managed properties and customers in dashboard sections
 
-### `npm test`
+### 👤 Customer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Log in and view properties assigned to their account (read-only access)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🧩 Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React 19
+- React Testing Library + Jest for unit tests
+- Axios for API communication
+- React Context API for authentication
+- Inline CSS styling
+- React Router for navigation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🧱 Architecture Overview
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    src/
+     ├── agent/
+     │    ├── api/                     → Agent-related API calls (add property, link property, etc.)
+     │    ├── components/              → UI components specific to the Agent dashboard
+     │    ├── AgentDashboard.jsx       → Main dashboard for agents
+     │    └── AgentDashboard.test.jsx  → Unit & integration tests for agent flow
+     │
+     ├── authentication/
+     │    ├── login/
+     │    │    ├── api/                → Login API logic
+     │    │    └── components/         → Login UI components
+     │    ├── registration/
+     │    │    ├── api/                → Registration API logic
+     │    │    └── components/         → Registration UI components
+     │    └── AxiosInterceptor.js      → Global Axios interceptor for token/error handling
+     │
+     ├── customer/
+     │    ├── api/                     → Customer-related API calls
+     │    ├── components/              → UI components for customers
+     │    └── CustomerDashboard.jsx    → Customer dashboard (read-only property view)
+     │
+     ├── routing/
+     │    ├── AgentRoutes.jsx          → Protected routes for agents
+     │    ├── AuthRoutes.jsx           → Routes for authentication (login/register)
+     │    ├── CustomerRoutes.jsx       → Protected routes for customers
+     │    ├── ProtectedRoute.jsx       → HOC for guarding authenticated routes
+     │    ├── PublicRoute.jsx          → Routes accessible without authentication
+     │    └── RootRoutes.jsx           → Entry point for route composition
+     │
+     ├── shared/
+     │    ├── components/              → Shared UI elements (modals, inputs, navbar)
+     │    ├── context/                 → Global contexts (AuthContext, ErrorContext)
+     │    ├── stores/                  → Shared state management (empty)
+     │    └── AppConstants.js          → Global constants (roles, API URLs, etc.)
+     │
+     └── index.js / App.js           → Application entry point and root component
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## ⚙️ Setup & Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 1. Clone the repository
 
-## Learn More
+    git clone https://github.com/hedifeki/estate-frontend.git
+    cd estate-frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 2. Install dependencies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    npm install
 
-### Code Splitting
+### 3. Run the development server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    npm start
+    # Frontend will run by default on http://localhost:3000
 
-### Analyzing the Bundle Size
+### 4. Environment variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Create a `.env` file in the project root:
 
-### Making a Progressive Web App
+    REACT_APP_API_BASE_URL=http://localhost:8080/api
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 🧪 Testing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Run all Jest + React Testing Library tests:
 
-### Deployment
+    npm test
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Example test coverage
 
-### `npm run build` fails to minify
+- AgentDashboard.test.jsx → verifies adding customers, properties, and linking
+- AddCustomerModal.test.jsx → verifies input validation and submit state
+- AddPropertyModal.test.jsx → verifies disabled/enabled behavior and form handling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🔐 Authentication Flow
+
+1. Login → `/auth/login` returns a JWT access token.
+2. Token is stored temporarily in localStorage (for now).
+3. All API calls include `Authorization: Bearer <token>`.
+4. Future improvement: replace localStorage with a secure mechanism (HttpOnly cookies or secure storage).
+
+---
+
+## ⚡ Improvements Roadmap
+
+### Security
+
+- Implement refresh token + silent renewal
+- Move token from localStorage to a secure store  
+  Example:
+  import SecureStorage from "react-secure-storage";
+  SecureStorage.setItem("accessToken", token);
+  const token = SecureStorage.getItem("accessToken");
+
+### UX / Validation
+
+- Add frontend input validation for email and password strength
+- Show clear error messages for invalid API responses
+- Handle offline mode / API timeouts gracefully
+
+### Internationalization
+
+- Add i18n for English / German translations
+
+### State Management
+
+- Introduce Redux Toolkit when global state grows (e.g. caching users/properties across views)
+
+### Testing
+
+- Add integration tests for linking flows
+- Simulate API errors in unit tests
+- Add end-to-end coverage (Cypress)
+
+---
+
+## 🧠 Folder Structure (Simplified)
+
+    src/
+     ├── api/
+     │    └── AgentApi.js
+     ├── components/
+     │    ├── AgentDashboard/
+     │    ├── modals/
+     │    ├── shared/
+     │    └── ...
+     ├── context/
+     │    └── AuthContext.jsx
+     ├── tests/
+     ├── App.jsx
+     └── index.jsx
+
+---
+
+## 🧰 Scripts
+
+| Command       | Description                   |
+| ------------- | ----------------------------- |
+| npm start     | Run dev server                |
+| npm run build | Build production bundle       |
+| npm test      | Run all tests                 |
+| npm run lint  | Check linting (if configured) |
+
+---
+
+## 👨‍💻 Author
+
+**Hedi Feki**  
+Founder & Full-Stack Developer  
+📧 support@quickshift.team

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL, STORAGE_KEYS } from '../shared/AppConstants';
+import { globalErrorHandler } from '../shared/components/error/globalErrorHandler';
+import { handleApiError } from '../shared/components/error/handleApiError';
 
 const AxiosInterceptor = axios.create({
   baseURL: API_BASE_URL,
@@ -20,12 +22,9 @@ AxiosInterceptor.interceptors.request.use(
 AxiosInterceptor.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      console.warn('[API] Unauthorized. Redirecting to login.');
-      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-      window.location.href = '/auth/login';
-    }
-    return Promise.reject(error);
+    const apiError = handleApiError(error);
+    globalErrorHandler(apiError);
+    return Promise.resolve({ data: null });
   }
 );
 

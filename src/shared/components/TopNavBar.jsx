@@ -19,6 +19,7 @@ const TopNavBar = ({ title, actions = [] }) => {
                 label={label}
                 onClick={onClick}
                 variant={variant || 'primary'}
+                testID={`navbar-${key}-btn`}
               />
             ))}
           </nav>

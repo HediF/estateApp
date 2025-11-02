@@ -10,30 +10,29 @@ const LoginPage = () => {
   const { login } = useAuth();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError(null);
   }, []);
 
   const handleLogin = useCallback(
     async (e) => {
       e.preventDefault();
       setLoading(true);
-      setError(null);
       try {
         const data = await loginUser(formData);
+        if (!data) return;
         login(data);
-      } catch (err) {
-        setError(err.message);
       } finally {
         setLoading(false);
       }
     },
     [formData, login]
   );
+
+  const isSubmitDisabled =
+    loading || !formData.email.trim() || !formData.password.trim();
 
   return (
     <div style={styles.container}>
@@ -56,10 +55,10 @@ const LoginPage = () => {
         <Button
           type='submit'
           label={loading ? 'Logging in...' : 'Login'}
-          disabled={loading}
+          submitDisabled={isSubmitDisabled}
         />
       </form>
-      {error && <p style={styles.error}>{error}</p>}
+
       <p>
         Don’t have an account?{' '}
         <span style={styles.link} onClick={() => navigate('/auth/register')}>
@@ -84,7 +83,6 @@ const styles = {
     marginTop: '20px',
   },
   link: { color: '#007BFF', cursor: 'pointer', textDecoration: 'underline' },
-  error: { color: 'red', marginTop: '10px' },
 };
 
 export default LoginPage;

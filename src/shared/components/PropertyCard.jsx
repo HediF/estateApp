@@ -55,7 +55,11 @@ const PropertyCard = ({ property, onAssigned }) => {
                     </button>
                   </>
                 ) : (
-                  <button onClick={handleOpenModal} style={styles.assignLink}>
+                  <button
+                    onClick={handleOpenModal}
+                    style={styles.assignLink}
+                    data-testid={'link-to-customer-btn'}
+                  >
                     Link to a Customer
                   </button>
                 )}
@@ -71,6 +75,7 @@ const PropertyCard = ({ property, onAssigned }) => {
           propertyId={property.id}
           onClose={handleCloseModal}
           onAssigned={onAssigned}
+          testID='link-property-input-customer-id'
         />
       )}
     </>

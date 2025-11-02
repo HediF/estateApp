@@ -1,5 +1,24 @@
-const Button = ({ label, onClick, type = 'button', variant = 'primary' }) => {
+const Button = ({
+  label,
+  onClick,
+  type = 'button',
+  variant = 'primary',
+  submitDisabled,
+  testID,
+}) => {
+  const isDisabled = Boolean(submitDisabled);
+
   const getButtonStyle = () => {
+    if (isDisabled) {
+      return {
+        ...styles.button,
+        backgroundColor: '#cbd5e1',
+        color: '#6b7280',
+        cursor: 'not-allowed',
+        opacity: 0.8,
+      };
+    }
+
     switch (variant) {
       case 'secondary':
         return { ...styles.button, backgroundColor: '#6c757d' };
@@ -11,7 +30,13 @@ const Button = ({ label, onClick, type = 'button', variant = 'primary' }) => {
   };
 
   return (
-    <button type={type} onClick={onClick} style={getButtonStyle()}>
+    <button
+      type={type}
+      onClick={!isDisabled ? onClick : undefined}
+      style={getButtonStyle()}
+      disabled={isDisabled}
+      data-testid={testID}
+    >
       {label}
     </button>
   );

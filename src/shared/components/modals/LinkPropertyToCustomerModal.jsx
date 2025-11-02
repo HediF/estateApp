@@ -8,6 +8,7 @@ const LinkPropertyToCustomerModal = ({
   propertyId,
   onClose,
   onAssigned,
+  testID,
 }) => {
   const [customerId, setCustomerId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,12 +25,10 @@ const LinkPropertyToCustomerModal = ({
         propertyId,
         Number(customerId)
       );
+      if (!updatedProperty) return;
       onAssigned?.(updatedProperty);
       onClose();
       setCustomerId('');
-    } catch (error) {
-      console.error('[PROPERTY] Failed to assign customer:', error);
-      alert('Failed to assign customer.');
     } finally {
       setLoading(false);
     }
@@ -42,6 +41,7 @@ const LinkPropertyToCustomerModal = ({
       onClose={onClose}
       onSubmit={handleAssign}
       submitLabel={loading ? 'Assigning...' : 'Assign'}
+      testID={testID}
     >
       <InputField
         label='Customer ID'
@@ -50,6 +50,7 @@ const LinkPropertyToCustomerModal = ({
         placeholder='Enter customer ID'
         value={customerId}
         onChange={(e) => setCustomerId(e.target.value)}
+        testID='link-property-input-customer-id'
       />
     </BaseModal>
   );

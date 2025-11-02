@@ -1,6 +1,7 @@
 import ApiError from './ApiError';
 
 export function handleApiError(error) {
+  console.log(error);
   if (error?.response?.data) {
     const data = error.response.data;
     return new ApiError({

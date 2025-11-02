@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import BaseModal from './BaseModal';
 import InputField from '../InputField';
 
-const AddCustomerModal = ({ isOpen, onClose, onSubmit }) => {
+const AddCustomerModal = ({ isOpen, onClose, onSubmit, testID }) => {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
 
   const handleChange = useCallback((e) => {
@@ -15,6 +15,9 @@ const AddCustomerModal = ({ isOpen, onClose, onSubmit }) => {
     onClose();
   }, [form, onSubmit, onClose]);
 
+  const isSubmitDisabled =
+    !form.name.trim() || !form.email.trim() || !form.password.trim();
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -22,6 +25,8 @@ const AddCustomerModal = ({ isOpen, onClose, onSubmit }) => {
       onClose={onClose}
       onSubmit={handleSubmit}
       submitLabel='Add Customer'
+      submitDisabled={isSubmitDisabled}
+      testID={testID}
     >
       <div style={styles.form}>
         <InputField
@@ -29,12 +34,14 @@ const AddCustomerModal = ({ isOpen, onClose, onSubmit }) => {
           name='name'
           value={form.name}
           onChange={handleChange}
+          testID={'add-customer-input-name'}
         />
         <InputField
           label='Email'
           name='email'
           value={form.email}
           onChange={handleChange}
+          testID={'add-customer-input-email'}
         />
         <InputField
           label='Password'
@@ -42,6 +49,7 @@ const AddCustomerModal = ({ isOpen, onClose, onSubmit }) => {
           type='password'
           value={form.password}
           onChange={handleChange}
+          testID={'add-customer-input-password'}
         />
       </div>
     </BaseModal>

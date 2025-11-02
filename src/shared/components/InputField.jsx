@@ -5,17 +5,20 @@ const InputField = ({
   placeholder,
   value,
   onChange,
+  testID,
 }) => {
   return (
     <div style={styles.container}>
       {label && <label style={styles.label}>{label}</label>}
       <input
+        id={name}
         name={name}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         style={styles.input}
+        data-testid={testID}
       />
     </div>
   );
@@ -26,6 +29,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
+    marginRight: '24px',
   },
   label: {
     fontSize: '14px',

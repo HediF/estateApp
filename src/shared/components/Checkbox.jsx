@@ -1,4 +1,4 @@
-const Checkbox = ({ label, name, checked, onChange }) => {
+const Checkbox = ({ label, name, checked, onChange, testID }) => {
   return (
     <div style={styles.container}>
       <label style={styles.label}>
@@ -8,6 +8,7 @@ const Checkbox = ({ label, name, checked, onChange }) => {
           checked={checked}
           onChange={onChange}
           style={styles.input}
+          data-testid={testID}
         />
         {label}
       </label>

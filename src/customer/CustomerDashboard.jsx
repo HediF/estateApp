@@ -9,13 +9,9 @@ const CustomerDashboard = () => {
   const [properties, setProperties] = useState([]);
 
   const fetchProperties = useCallback(async () => {
-    try {
-      const data = await getCustomerProperties();
-      setProperties(data);
-    } catch (error) {
-      console.error('[CUSTOMER DASHBOARD] Failed to load properties:', error);
-      alert('Failed to load your properties.');
-    }
+    const data = await getCustomerProperties();
+    if (!data) return;
+    setProperties(data);
   }, []);
 
   useEffect(() => {

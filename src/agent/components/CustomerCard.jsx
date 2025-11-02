@@ -5,7 +5,7 @@ const CustomerCard = ({ customer }) => {
       : '—';
 
   return (
-    <div style={styles.row}>
+    <div style={styles.row} data-testid={`customer-${customer.id}`}>
       <div style={styles.cellId}>{customer.id}</div>
       <div style={styles.cellName}>
         <img
