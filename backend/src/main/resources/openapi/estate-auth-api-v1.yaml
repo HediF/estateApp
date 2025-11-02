@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Estate Auth API
+  version: 1.0.0
+  description: Minimal auth API. Agents can register. Agents/customers can log in.
+
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new agent
+      operationId: registerAgent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRegistrationRequest'
+      responses:
+        '201':
+          description: Agent created
+          headers:
+            Location:
+              description: URL of the created agent resource
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentRegistrationResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: User registration failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+  /auth/login:
+    post:
+      summary: Login (agent or customer)
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Unauthorized or invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+components:
+  schemas:
+    AgentRegistrationRequest:
+      type: object
+      required: [name, email, password, registrationCode]
+      properties:
+        name:
+          type: string
+          example: Max Mustermann
+        email:
+          type: string
+          format: email
+          example: max@example.com
+        password:
+          type: string
+          format: password
+          minLength: 6
+          example: secret123
+        registrationCode:
+          type: string
+          description: |
+            Special code required to register as an agent. 
+            Ensures only authorized users can create agent accounts.
+          example: AGENT-INVITE-2025
+
+    AgentRegistrationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        name:
+          type: string
+          example: Max Mustermann
+        email:
+          type: string
+          format: email
+          example: max@example.com
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        userType:
+          type: string
+          description: Optional hint to distinguish flows; customers cannot self-register.
+          enum: [AGENT, CUSTOMER]
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: max@example.com
+        password:
+          type: string
+          format: password
+          example: secret123
+        userType:
+          type: string
+          description: Optional hint to distinguish flows; customers cannot self-register.
+          enum: [AGENT, CUSTOMER]
+
+    LoginResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 101
+        userType:
+          type: string
+          enum: [AGENT, CUSTOMER]
+        name:
+          type: string
+          example: Max Mustermann
+        email:
+          type: string
+          format: email
+          example: max@example.com
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+    ErrorMessage:
+      type: object
+      description: Standardized error response returned by the API.
+      properties:
+        messageCode:
+          type: string
+          example: "00002"
+        title:
+          type: string
+          example: "Invalid credentials."
+        details:
+          type: string
+          example: "The provided email or password is incorrect. Please try again."
+        httpStatus:
+          type: integer
+          example: 400
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-11-01T12:34:56Z

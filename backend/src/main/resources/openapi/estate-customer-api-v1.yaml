@@ -1,0 +1,90 @@
+openapi: 3.0.3
+info:
+  title: Estate Customer Management API
+  version: 1.0.0
+  description: Endpoints for customers to view their assigned properties.
+
+servers:
+  - url: http://localhost:8080/api
+
+paths:
+  /customer/properties:
+    get:
+      summary: Fetch all properties assigned to the authenticated customer
+      operationId: getCustomerProperties
+      responses:
+        '200':
+          description: List of properties assigned to the customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropertyResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: No properties found or customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+
+components:
+  schemas:
+    PropertyResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        title:
+          type: string
+          example: Cozy Apartment Downtown
+        address:
+          type: string
+          example: 45 River Street, Munich
+        price:
+          type: number
+          format: double
+          example: 95000.0
+        isNewConstruction:
+          type: boolean
+          example: false
+        agentId:
+          type: integer
+          example: 3
+        customerId:
+          type: integer
+          example: 7
+
+    ErrorMessage:
+      type: object
+      description: Standardized error response returned by the API.
+      properties:
+        messageCode:
+          type: string
+          example: "02001"
+        title:
+          type: string
+          example: "Authenticated customer not found."
+        details:
+          type: string
+          example: "No customer account found for the authenticated e-mail address john.doe@example.com."
+        httpStatus:
+          type: integer
+          example: 401
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-11-01T12:34:56Z

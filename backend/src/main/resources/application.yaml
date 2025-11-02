@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: estate
+
+  messages:
+    basename: exceptions
+    encoding: UTF-8
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/estate
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate.format_sql: false
+      hibernate.show_sql: false
+
+server:
+  port: 8080
+
+jwt:
+  secret: ${JWT_SECRET}
+  token-expiration: 3600 # 1 hour
+
+registration:
+  agent-verification-code: ${AGENT_VERIFICATION_CODE}
