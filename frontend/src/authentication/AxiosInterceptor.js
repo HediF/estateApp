@@ -24,6 +24,11 @@ AxiosInterceptor.interceptors.response.use(
   (error) => {
     const apiError = handleApiError(error);
     globalErrorHandler(apiError);
+    if (error.response && [401, 403].includes(error.response.status)) {
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      window.location.href = '/login';
+    }
+
     return Promise.resolve({ data: null });
   }
 );
