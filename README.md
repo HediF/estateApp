@@ -159,21 +159,7 @@ JWT was chosen to:
 
 ## ▶️ Getting Started
 
-### Backend
-
-cd backend
-./mvnw spring-boot:run
-
-### Frontend
-
-cd frontend  
-npm install  
-npm start  
-
-### Database
-
-- PostgreSQL required  
-- Configure credentials in `application.properties`  
+The repository contains separate README files in the frontend and backend folders, each explaining how to start the respective components.
 
 ---
 
