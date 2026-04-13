@@ -1,11 +1,11 @@
 package com.task.estate.api.agent;
 
+import com.task.estate.agent.v1.gen.api.DefaultApi;
 import com.task.estate.agent.v1.gen.model.*;
 import com.task.estate.domain.Property.PropertyDto;
 import com.task.estate.domain.agent.CreateCustomerRequestDto;
 import com.task.estate.domain.agent.CreatePropertyRequestDto;
 import com.task.estate.domain.customer.CustomerDto;
-import com.task.estate.agent.v1.gen.api.DefaultApi;
 import com.task.estate.service.agent.AgentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j

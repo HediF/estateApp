@@ -25,7 +25,6 @@ AxiosInterceptor.interceptors.response.use(
     const apiError = handleApiError(error);
     globalErrorHandler(apiError);
     if (error.response && [401, 403].includes(error.response.status)) {
-      console.log(error);
       localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
       window.location.href = '/login';
     }

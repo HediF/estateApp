@@ -5,7 +5,7 @@ info:
   description: Endpoints for customers to view their assigned properties.
 
 servers:
-  - url: http://localhost:8080/api
+  - url: https://localhost:8080/api
 
 paths:
   /customer/properties:
